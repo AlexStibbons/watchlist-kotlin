@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_movie">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_movieAct_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_editor_absoluteX="29dp"
+        app:layout_editor_absoluteY="26dp"
+        app:layout_constraintLeft_toRightOf="@id/movie_vertical_guideline_left"
+        app:layout_constraintRight_toLeftOf="@id/et_movieAct_title"
+        app:layout_constraintTop_toBottomOf="@id/movie_horizontal_guideline_top"
+        app:layout_constraintBottom_toTopOf="@id/horizontal_guideline_limit"/>
+
+    <TextView
+        android:id="@+id/et_movieAct_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="TITLE"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:gravity="center"
+        app:layout_editor_absoluteX="162dp"
+        app:layout_editor_absoluteY="75dp"
+        app:layout_constraintLeft_toRightOf="@id/img_movieAct_image"
+        app:layout_constraintRight_toLeftOf="@id/btn_movieAct_favorite"
+        app:layout_constraintBottom_toTopOf="@id/horizontal_guideline_limit"
+        app:layout_constraintTop_toBottomOf="@id/movie_horizontal_guideline_top"/>
+
+
+    <ToggleButton
+        android:id="@+id/btn_movieAct_favorite"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_toggle_favourite"
+        android:checked="false"
+        android:text=""
+        android:textOff=""
+        android:textOn=""
+        app:layout_editor_absoluteX="335dp"
+        app:layout_editor_absoluteY="42dp"
+        app:layout_constraintBottom_toTopOf="@id/horizontal_guideline_limit"
+        app:layout_constraintTop_toBottomOf="@id/movie_horizontal_guideline_top"
+        app:layout_constraintRight_toLeftOf="@id/movie_vertical_guideline_right"/>
+
+    <TextView
+        android:id="@+id/et_movieAct_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="DESCRIPTION"
+        android:textColor="#000"
+        app:layout_constraintTop_toBottomOf="@id/horizontal_guideline_limit"
+        app:layout_constraintRight_toLeftOf="@id/movie_vertical_guideline_right"
+        app:layout_constraintLeft_toRightOf="@id/movie_vertical_guideline_left"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/movie_vertical_guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="10dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/movie_vertical_guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="11dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/movie_horizontal_guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="7dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/movie_horizontal_guideline_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="302dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_guideline_limit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="143dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
