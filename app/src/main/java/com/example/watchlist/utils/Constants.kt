@@ -5,6 +5,7 @@ const val EXTRA_IF_FAVE_CHANGED = "com.example.watchlist.FAVE_CHANGE"
 const val EXTRA_USER_ID = "com.example.watchlist.USER_ID"
 const val EXTRA_MOVIE_ID = "com.example.watchlist.MOVIE_ID"
 const val EXTRA_IS_FAVE = "com.example.watchlist.IS_FAVE"
+const val DB_NAME = "watchlistDb"
 
 // api related
 const val API_KEY = "key"
