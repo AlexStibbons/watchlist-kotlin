@@ -9,8 +9,10 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.watchlist.R
 import com.example.watchlist.database.LocalDb
+import com.example.watchlist.database.models.User
 import com.example.watchlist.utils.EXTRA_USER_ID
 import com.example.watchlist.utils.hasLoginData
+import kotlinx.coroutines.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -21,6 +23,10 @@ class LoginActivity : AppCompatActivity() {
     lateinit var passwordEditText: EditText
     lateinit var loginButton: Button
     private lateinit var localDb: LocalDb
+
+    // coroutines
+    private val job = Job()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + job) // .Main for quick jobs
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,20 +40,37 @@ class LoginActivity : AppCompatActivity() {
             var email: String? = emailEditText.text.toString()
             var password: String? = passwordEditText.text.toString()
 
+            // when (hasLoginData) seems like overdoing it
             if (hasLoginData(email, password)) {
                 localDb = LocalDb.getInstance(this)
-                // go to DB; find or create user; pass id to new activity
                 Toast.makeText(this, "$email and $password", Toast.LENGTH_LONG).show()
+
+                // works, but badly written
+                coroutineScope.launch {
+                    var userId: Int? = localDb.userDao().getUserIdByEmail(emailEditText.text.toString())
+
+                    if (userId != null) {
+                        changeActivity(userId)
+                    } else {
+                        userId = localDb.userDao().addUser(User(null, emailEditText.text.toString(),passwordEditText.text.toString())).toInt()
+                        changeActivity(userId)
+                    }
+                }
             } else {
                 Toast.makeText(this, "Input email and pass", Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    fun changeActivity(id: Int) {
-        val intent = Intent(this, ListsActivity::class.java).apply {
+    fun changeActivity(id: Int?) {
+        val intent = Intent(this, Testy::class.java).apply {
             putExtra(EXTRA_USER_ID, id)
         }
         startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
     }
 }

@@ -7,20 +7,20 @@ import com.example.watchlist.database.models.User
 interface UserDao {
 
     @Query("SELECT * FROM user")
-    fun getAllUsers(): List<User>
+    suspend fun getAllUsers(): List<User>
 
     @Query("SELECT user.id FROM user WHERE user.email = :email")
-    fun getUserIdByEmail(email: String): Int // could this work?
+    suspend fun getUserIdByEmail(email: String): Int
 
     @Query("SELECT * FROM user WHERE user.id = :id")
-    fun getUserById(id: Int): User
+    suspend fun getUserById(id: Int): User
 
     @Insert
-    fun addUser(user: User): Long // insert always returns long
+    suspend fun addUser(user: User): Long // insert always returns long
 
     @Delete
-    fun removeUser(user: User)
+    suspend fun removeUser(user: User)
 
     @Update
-    fun updateUser(user: User)
+    suspend fun updateUser(user: User)
 }

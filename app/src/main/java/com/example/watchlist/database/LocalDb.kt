@@ -24,7 +24,7 @@ abstract class LocalDb : RoomDatabase() {
     companion object {
 
         // declare instance
-        @Volatile // what is this?
+        @Volatile // --> always get a current, valid instance; never cached
         private var instance: LocalDb? = null
 
         // more info on creating singletons in kotlin
