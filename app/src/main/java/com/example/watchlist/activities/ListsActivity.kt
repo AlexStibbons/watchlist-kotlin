@@ -11,5 +11,9 @@ class ListsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lists)
+
+        // get tab layout
+
+        // get view page adapter for fragments
     }
 }

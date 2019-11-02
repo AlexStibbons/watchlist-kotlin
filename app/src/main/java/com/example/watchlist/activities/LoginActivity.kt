@@ -25,10 +25,13 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var localDb: LocalDb
 
     // coroutines
+
+    // more info on Job() and grouping them in CoroutineScope
     private val job = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
     // .Main for quick jobs; will communicate with main
     // .IO for network or local db -> on success, stays on background!
+    // .Default for CPU intensive jobs
     // to return to main, must make new coroutine scope using main!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,15 +49,12 @@ class LoginActivity : AppCompatActivity() {
             // when (hasLoginData) seems like overdoing it
             if (hasLoginData(email, password)) {
                 localDb = LocalDb.getInstance(this)
-                Toast.makeText(this, "$email and $password", Toast.LENGTH_LONG).show()
 
-                // works, but not written in kotlin-ish
+                // is it kotlin-ish?
                 coroutineScope.launch {
-                    var userId: Int? = localDb.userDao().getUserIdByEmail(emailEditText.text.toString())
+                    var userId: Int? = localDb.userDao().getUserIdByEmail(email!!) // !! to be avoided
 
-                    if (userId != null) {
-                        changeActivity(userId)
-                    } else {
+                    if (userId != null) changeActivity(userId) else {
                         userId = localDb.userDao().addUser(User(null, emailEditText.text.toString(),passwordEditText.text.toString())).toInt()
                         changeActivity(userId)
                     }
@@ -70,10 +70,12 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, Testy::class.java).apply {
             putExtra(EXTRA_USER_ID, id)
         }
+        // because previous coroutine is in IO [background]
+        // it must return to Main
+        // and only then can it start activity, update ui, etc
         withContext(Dispatchers.Main) {
             startActivity(intent)
         }
-
     }
 
     override fun onDestroy() {
