@@ -26,7 +26,10 @@ class LoginActivity : AppCompatActivity() {
 
     // coroutines
     private val job = Job()
-    private val coroutineScope = CoroutineScope(Dispatchers.Main + job) // .Main for quick jobs
+    private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
+    // .Main for quick jobs; will communicate with main
+    // .IO for network or local db -> on success, stays on background!
+    // to return to main, must make new coroutine scope using main!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
                 localDb = LocalDb.getInstance(this)
                 Toast.makeText(this, "$email and $password", Toast.LENGTH_LONG).show()
 
-                // works, but badly written
+                // works, but not written in kotlin-ish
                 coroutineScope.launch {
                     var userId: Int? = localDb.userDao().getUserIdByEmail(emailEditText.text.toString())
 
@@ -62,11 +65,15 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun changeActivity(id: Int?) {
+    suspend fun changeActivity(id: Int?) {
+
         val intent = Intent(this, Testy::class.java).apply {
             putExtra(EXTRA_USER_ID, id)
         }
-        startActivity(intent)
+        withContext(Dispatchers.Main) {
+            startActivity(intent)
+        }
+
     }
 
     override fun onDestroy() {
