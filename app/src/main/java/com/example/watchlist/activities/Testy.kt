@@ -38,7 +38,7 @@ class Testy : AppCompatActivity() {
         val movieService = RetrofitFactory.makeMovieService()
         // then, go to network
         CoroutineScope(Dispatchers.IO).launch {
-            val response: List<Movie>? = movieService.getTopMovies(API_KEY).body()?.results
+            val response: List<Movie>? = movieService.getPopularMovies(page = 402).body()?.results
             // then, go back to main
             withContext(Dispatchers.Main) {
 

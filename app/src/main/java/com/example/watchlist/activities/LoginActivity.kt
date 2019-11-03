@@ -67,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
 
     suspend fun changeActivity(id: Int?) {
 
-        val intent = Intent(this, Testy::class.java).apply {
+        val intent = Intent(this, ListsActivity::class.java).apply {
             putExtra(EXTRA_USER_ID, id)
         }
         // because previous coroutine is in IO [background]
