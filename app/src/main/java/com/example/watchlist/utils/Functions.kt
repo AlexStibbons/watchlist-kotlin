@@ -1,6 +1,14 @@
 package com.example.watchlist.utils
 
+import android.util.Log
+import android.widget.AbsListView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.watchlist.database.models.Movie
+import com.example.watchlist.fragments.MoviesFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+
+
 
 
 internal fun hasLoginData(email: String?, password: String?): Boolean{

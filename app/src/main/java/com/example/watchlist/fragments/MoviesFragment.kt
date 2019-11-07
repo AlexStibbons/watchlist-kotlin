@@ -24,6 +24,7 @@ import kotlinx.coroutines.withContext
 import android.widget.AbsListView
 import androidx.core.view.get
 
+
 private const val USER_ID = "userId"
 
 class MoviesFragment : Fragment() {
@@ -104,7 +105,10 @@ class MoviesFragment : Fragment() {
     fun fetchMovies(movieService: MovieService) {
 
         getMovies(currentPage, movieService) // get from api
-        getWatchlistIds(userId!!) // get watchlist
+        //getWatchlistIds(userId!!) // get watchlist
+        userId?.let{
+            getWatchlistIds(it)
+        }
         initRecyclerView()
     }
 
@@ -118,12 +122,15 @@ class MoviesFragment : Fragment() {
     }
 
     fun getWatchlistIds(userId: Int) {
+
         CoroutineScope(Dispatchers.IO).launch {
             val idList = localDb?.userMovieDao()?.getMovieIdsForUser(userId)
 
-            withContext(Dispatchers.Main) {
-                //adapter.setWatchilistIds(idList!!)
-                adapter.setWatchilistIds(arrayListOf(475557, 290859, 920, 338967))
+            if (idList != null) {
+                withContext(Dispatchers.Main) {
+                    //adapter.setWatchilistIds(idList)
+                    adapter.setWatchilistIds(arrayListOf(475557, 290859, 920, 338967))
+                }
             }
         }
     }
@@ -131,16 +138,18 @@ class MoviesFragment : Fragment() {
     fun initRecyclerView(){
 
         val layoutManager = LinearLayoutManager(activity)
-        recyclerView.let {
+        recyclerView.let { // or apply?
             it.adapter = adapter
             it.layoutManager = layoutManager
         }
         addOnScroll(recyclerView, layoutManager)
-
     }
 
     fun addOnScroll(recyclerView: RecyclerView, layoutManager: LinearLayoutManager) {
 
+        // extension func on recyclerView
+        // but currentPage and getMovies are not available then
+        // would work for watchlist fragment, but not here possibly
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -152,7 +161,6 @@ class MoviesFragment : Fragment() {
                     fab.show()
                 }
             }
-
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
